@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lokaler Bild-Uploader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8fafc;
+            color: #1f2937;
+            padding: 40px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        input[type="file"] {
+            padding: 8px;
+        }
+        input[type="submit"] {
+            background-color: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .card {
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            width: 220px;
+            text-align: center;
+        }
+        .card img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        .actions {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .actions form,
+        .actions a {
+            width: 48%;
+        }
+        .btn {
+            display: block;
+            padding: 6px;
+            text-align: center;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+        .btn-delete {
+            background-color: #ef4444;
+        }
+        .btn-download {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lokaler Bild-Uploader</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <input type="submit" value="Hochladen">
+    </form>
+
+    <div class="gallery">
+        {% for file in files %}
+        <div class="card">
+            <img src="{{ url_for('uploaded_file', filename=file) }}" alt="{{ file }}">
+            <div class="actions">
+                <form method="POST" action="/delete/{{ file }}">
+                    <button class="btn btn-delete" type="submit">Löschen</button>
+                </form>
+                <a class="btn btn-download" href="/download/{{ file }}">Download</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
